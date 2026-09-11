@@ -1,0 +1,1901 @@
+ss<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐢 4 Typing Games for Kids — Realistic Human Hands</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: linear-gradient(135deg, #2b5a8c, #1e3c5f);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', 'Comic Sans MS', 'Chalkboard SE', cursive, sans-serif;
+            padding: 12px;
+        }
+
+        .app {
+            background: #fef9e8;
+            border-radius: 50px;
+            padding: 22px 24px 30px;
+            box-shadow: 0 20px 30px rgba(0,0,0,0.5);
+            border: 5px solid #ffcf7a;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.2rem;
+            color: #2d1b0e;
+            text-shadow: 3px 3px 0 #f7b731;
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #7a5a3a;
+            margin-bottom: 18px;
+            font-weight: 600;
+        }
+
+        .game-selector {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .game-btn {
+            background: #e9d6b0;
+            border: 4px solid #b48c5c;
+            border-radius: 60px;
+            padding: 10px 20px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #2d1b0e;
+            cursor: pointer;
+            box-shadow: 0 7px 0 #8b6b45, 0 8px 12px rgba(0,0,0,0.15);
+            transition: 0.08s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .game-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 3px 0 #8b6b45, 0 6px 10px rgba(0,0,0,0.15);
+        }
+
+        .game-btn.active {
+            background: #ffcf7a;
+            border-color: #e6a83a;
+            box-shadow: 0 5px 0 #b46f1e, 0 8px 12px rgba(0,0,0,0.2);
+            transform: translateY(2px);
+        }
+
+        .game-area {
+            background: #c5e0f7;
+            background-image: radial-gradient(circle at 20% 30%, #d4ecff 0%, #9ac2e0 90%);
+            border-radius: 80px 80px 40px 40px;
+            padding: 20px 16px 20px;
+            border: 5px dashed #ffb347;
+            box-shadow: inset 0 0 25px #b0c8dd, 0 8px 12px rgba(0,0,0,0.2);
+            min-height: 320px;
+            position: relative;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #e9d6b0;
+            border-radius: 100px;
+            padding: 8px 22px;
+            margin-bottom: 16px;
+            border: 3px solid #b48c5c;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #2e1b0e;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .stat-box {
+            background: #fef9e8;
+            padding: 4px 20px;
+            border-radius: 40px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1), 0 2px 0 #a77b4b;
+            border: 2px solid #b48c5c;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .stat-box i {
+            font-size: 1.4rem;
+            font-style: normal;
+        }
+
+        .stat-box span {
+            font-size: 1.6rem;
+            min-width: 45px;
+            text-align: center;
+            color: #b33e1f;
+            font-weight: 800;
+        }
+
+        .message {
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #ac3a1a;
+            min-height: 2rem;
+            margin-top: 4px;
+        }
+
+        .hint-area {
+            background: #f8e2b0;
+            border-radius: 80px;
+            padding: 10px 16px;
+            border: 4px solid #c49a6c;
+            box-shadow: inset 0 4px 6px #fef3d4, 0 6px 0 #7c5d3a;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .hint-area p {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #4e2f14;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .hint-area kbd {
+            background: #fef9e8;
+            border-radius: 14px;
+            padding: 6px 22px;
+            font-size: 2rem;
+            font-weight: 800;
+            color: #2d1b0e;
+            box-shadow: 0 4px 0 #8b6b45, 0 6px 10px rgba(0,0,0,0.2);
+            border: 2px solid #e6cba0;
+            font-family: 'Courier New', monospace;
+            min-width: 70px;
+            display: inline-block;
+        }
+
+        /* ---- KEYBOARD CONTAINER ---- */
+        .keyboard-container {
+            position: relative;
+            background: #34495e;
+            border-radius: 28px;
+            padding: 14px 10px 4px 10px;
+            border: 4px solid #2c3e50;
+            box-shadow: inset 0 4px 8px rgba(0,0,0,0.3), 0 6px 0 #1a252f;
+            margin: 10px 0 6px;
+        }
+
+        .keyboard-section {
+            background: #d9c49a;
+            border-radius: 20px;
+            padding: 8px 6px;
+            border: 3px solid #a77b4b;
+            box-shadow: inset 0 4px 6px #f0e1c4;
+            position: relative;
+            z-index: 2;
+        }
+
+        .keyboard-row {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-bottom: 5px;
+            flex-wrap: wrap;
+        }
+
+        .key {
+            background: #fef9e8;
+            border: 2px solid #b48c5c;
+            border-radius: 10px;
+            padding: 6px 0;
+            min-width: 40px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #2d1b0e;
+            text-align: center;
+            box-shadow: 0 4px 0 #8b6b45;
+            transition: 0.05s;
+            font-family: 'Courier New', monospace;
+            user-select: none;
+            position: relative;
+        }
+
+        .key.highlight-key {
+            background: #4cc9f0 !important;
+            border-color: #0077b6 !important;
+            color: #fff !important;
+            box-shadow: 0 4px 0 #03045e, 0 0 12px #4cc9f0 !important;
+            transform: translateY(2px);
+        }
+
+        .key.correct {
+            background: #7ed957 !important;
+            border-color: #3d8b1f !important;
+            box-shadow: 0 2px 0 #2b6b0e !important;
+            color: #1d3b0a;
+            transform: translateY(3px);
+        }
+
+        .key.wrong {
+            background: #e74c3c !important;
+            border-color: #a82315 !important;
+            box-shadow: 0 2px 0 #7a1a0e !important;
+            color: #fff6e5;
+            transform: translateY(3px);
+        }
+
+        /* ---- 100% REALISTIC CURVED HUMAN HANDS (ASLI HATH) ---- */
+        .hands-base-area {
+            position: relative;
+            height: 95px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 10px;
+            margin-top: -8px;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .hand-wrapper {
+            display: flex;
+            position: relative;
+            width: 230px;
+            height: 95px;
+        }
+
+        .hand-palm {
+            position: absolute;
+            bottom: 0;
+            width: 175px;
+            height: 62px;
+            background: linear-gradient(135deg, #f5cbaf, #e2ae86);
+            border-radius: 80px 80px 20px 20px;
+            box-shadow: inset 0 -8px 15px rgba(0,0,0,0.15), 0 5px 10px rgba(0,0,0,0.25);
+            border-top: 3px solid #ffdec4;
+        }
+
+        .left-hand .hand-palm { left: 15px; border-top-left-radius: 90px; }
+        .right-hand .hand-palm { right: 15px; border-top-right-radius: 90px; }
+
+        .thumb {
+            position: absolute;
+            bottom: 5px;
+            width: 32px;
+            height: 65px;
+            background: linear-gradient(135deg, #f7d2b5, #dfad84);
+            border-radius: 20px 20px 10px 15px;
+            box-shadow: inset 3px 0 6px rgba(255,255,255,0.5), 0 4px 8px rgba(0,0,0,0.2);
+            border-top: 2px solid #ffebd9;
+            z-index: 4;
+            transition: transform 0.15s ease;
+        }
+
+        .left-hand .thumb { right: 8px; transform: rotate(25deg); transform-origin: bottom right; }
+        .right-hand .thumb { left: 8px; transform: rotate(-25deg); transform-origin: bottom left; }
+
+        .thumb::before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 9px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 6px 6px 2px 2px;
+        }
+
+        .fingers-row {
+            position: absolute;
+            bottom: 35px;
+            display: flex;
+            gap: 5px;
+            width: 145px;
+        }
+
+        .left-hand .fingers-row { left: 15px; }
+        .right-hand .fingers-row { right: 15px; }
+
+        .finger {
+            width: 28px;
+            height: 68px;
+            background: linear-gradient(135deg, #f8d5b8, #e0ac85);
+            border-radius: 18px 18px 6px 6px;
+            position: relative;
+            box-shadow: inset 3px 0 7px rgba(255,255,255,0.5), inset -2px 0 5px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.18);
+            border-top: 2px solid #ffebd9;
+            transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.15s ease;
+        }
+
+        .finger::after {
+            content: '';
+            position: absolute;
+            top: 24px;
+            left: 4px;
+            right: 4px;
+            height: 2px;
+            background: rgba(180, 110, 70, 0.2);
+            border-radius: 1px;
+        }
+
+        .finger::before {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 13px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.55);
+            border-radius: 6px 6px 3px 3px;
+        }
+
+        .finger-dot {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) scale(0);
+            width: 11px;
+            height: 11px;
+            background: #00f5d4;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #00f5d4, 0 0 14px #ffffff;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 5;
+        }
+
+        .finger.active-finger .finger-dot {
+            transform: translateX(-50%) scale(1);
+        }
+
+        .finger.active-finger {
+            background: linear-gradient(135deg, #ffdfc5, #e8b38a);
+            transform: translateY(-8px);
+            box-shadow: 0 0 12px rgba(0, 245, 212, 0.7), inset 3px 0 8px rgba(255,255,255,0.7);
+        }
+
+        /* Scenery elements */
+        .cloud {
+            position: absolute;
+            font-size: 2.6rem;
+            opacity: 0.85;
+            z-index: 0;
+            pointer-events: none;
+            filter: drop-shadow(0 6px 4px rgba(0,0,0,0.1));
+            animation: floatCloud 12s infinite alternate ease-in-out;
+        }
+
+        .cloud-1 { top: 8px; left: 5%; animation-duration: 14s; }
+        .cloud-2 { top: 20px; left: 45%; font-size: 3.2rem; animation-duration: 18s; }
+        .cloud-3 { top: 12px; right: 8%; font-size: 2.2rem; animation-duration: 10s; }
+
+        @keyframes floatCloud {
+            0% { transform: translateX(0px) translateY(0px); }
+            100% { transform: translateX(30px) translateY(-8px); }
+        }
+
+        .tree {
+            position: absolute;
+            font-size: 2.4rem;
+            bottom: 6px;
+            z-index: 1;
+            pointer-events: none;
+            filter: drop-shadow(0 6px 4px rgba(0,0,0,0.2));
+        }
+
+        .tree-1 { left: 8%; }
+        .tree-2 { left: 30%; font-size: 2.8rem; bottom: 4px; }
+        .tree-3 { right: 22%; font-size: 2.2rem; bottom: 8px; }
+        .tree-4 { right: 6%; font-size: 2.6rem; bottom: 6px; }
+
+        .grass-strip {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 28px;
+            background: linear-gradient(0deg, #5b8c3e, #7cb85c);
+            border-radius: 0 0 20px 20px;
+            z-index: 0;
+            border-top: 4px solid #4a7a2e;
+        }
+
+        .grass-tuft {
+            position: absolute;
+            bottom: 2px;
+            font-size: 1.4rem;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .race-track {
+            position: relative;
+            height: 180px;
+            background: #5a5a5a;
+            border-radius: 20px;
+            margin: 10px 0;
+            overflow: hidden;
+            border: 6px solid #3d3d3d;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        .road-line {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: repeating-linear-gradient(90deg, #fff 0px, #fff 20px, transparent 20px, transparent 40px);
+            transform: translateY(-50%);
+            opacity: 0.7;
+            z-index: 1;
+        }
+
+        .car {
+            position: absolute;
+            font-size: 3rem;
+            bottom: 8px;
+            left: 10px;
+            transition: left 0.15s ease-out;
+            filter: drop-shadow(0 6px 4px rgba(0,0,0,0.3));
+            z-index: 5;
+        }
+
+        .car.right-car {
+            right: 10px;
+            left: auto;
+            bottom: 8px;
+            transform: scaleX(-1);
+        }
+
+        .finish-line {
+            position: absolute;
+            right: 20px;
+            top: 0;
+            height: 100%;
+            width: 14px;
+            background: repeating-linear-gradient(0deg, #000 0px, #000 10px, #fff 10px, #fff 20px);
+            z-index: 3;
+            box-shadow: 0 0 10px gold;
+        }
+
+        .balloon-field {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 18px 24px;
+            min-height: 200px;
+            padding: 10px;
+        }
+
+        .balloon {
+            font-size: 3.2rem;
+            font-weight: 800;
+            font-family: 'Segoe UI', 'Comic Sans MS', cursive;
+            color: #fff6e5;
+            background: #e74c3c;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 90px;
+            height: 90px;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            box-shadow: 0 10px 0 #8e2b1f, 0 14px 14px rgba(0,0,0,0.2), inset -4px -6px 0 rgba(0,0,0,0.1), inset 8px 8px 16px #ff9f8f;
+            transform: rotate(1deg);
+            transition: 0.1s;
+            text-shadow: 3px 4px 0 #632015;
+            position: relative;
+            border: 2px solid #fff0d0;
+            animation: float 3s infinite alternate ease-in-out;
+        }
+
+        .balloon::after {
+            content: '';
+            position: absolute;
+            bottom: -14px;
+            left: 44%;
+            width: 8px;
+            height: 18px;
+            background: #b07d4b;
+            border-radius: 0 0 6px 6px;
+            transform: rotate(4deg);
+            box-shadow: 0 3px 3px #4d2e1a;
+        }
+
+        .balloon[data-color="blue"] {
+            background: #3498db;
+            box-shadow: 0 10px 0 #1b4f72, 0 14px 14px rgba(0,0,0,0.2), inset -4px -6px 0 rgba(0,0,0,0.1), inset 8px 8px 16px #85c1e9;
+            text-shadow: 3px 4px 0 #154360;
+        }
+        .balloon[data-color="green"] {
+            background: #2ecc71;
+            box-shadow: 0 10px 0 #186a3b, 0 14px 14px rgba(0,0,0,0.2), inset -4px -6px 0 rgba(0,0,0,0.1), inset 8px 8px 16px #a9dfbf;
+            text-shadow: 3px 4px 0 #0e4d26;
+        }
+        .balloon[data-color="purple"] {
+            background: #9b59b6;
+            box-shadow: 0 10px 0 #512e5f, 0 14px 14px rgba(0,0,0,0.2), inset -4px -6px 0 rgba(0,0,0,0.1), inset 8px 8px 16px #d2b4de;
+            text-shadow: 3px 4px 0 #3a1f42;
+        }
+        .balloon[data-color="orange"] {
+            background: #e67e22;
+            box-shadow: 0 10px 0 #935116, 0 14px 14px rgba(0,0,0,0.2), inset -4px -6px 0 rgba(0,0,0,0.1), inset 8px 8px 16px #fad7a0;
+            text-shadow: 3px 4px 0 #5e2e0a;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(1deg); }
+            100% { transform: translateY(-12px) rotate(-1deg); }
+        }
+
+        .balloon.pop {
+            animation: popOff 0.2s forwards;
+        }
+
+        @keyframes popOff {
+            0% { transform: scale(1); opacity: 1; }
+            70% { transform: scale(1.3); opacity: 0.7; }
+            100% { transform: scale(0); opacity: 0; }
+        }
+
+        .mole-field {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            min-height: 200px;
+            padding: 10px;
+        }
+
+        .mole {
+            font-size: 4rem;
+            font-weight: 800;
+            font-family: 'Segoe UI', 'Comic Sans MS', cursive;
+            color: #fff6e5;
+            background: #8e6b3e;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100px;
+            height: 100px;
+            border-radius: 50% 50% 40% 40%;
+            box-shadow: 0 10px 0 #5a3e1f, 0 14px 14px rgba(0,0,0,0.3), inset -4px -6px 0 rgba(0,0,0,0.2), inset 8px 8px 16px #d4b48c;
+            transition: 0.1s;
+            text-shadow: 3px 4px 0 #3a2812;
+            position: relative;
+            border: 3px solid #ffe0a3;
+            animation: moleBounce 2s infinite alternate ease-in-out;
+        }
+
+        .mole::after {
+            content: '👀';
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.2rem;
+        }
+
+        @keyframes moleBounce {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-8px); }
+        }
+
+        .mole.pop {
+            animation: popMole 0.2s forwards;
+        }
+
+        @keyframes popMole {
+            0% { transform: scale(1); opacity: 1; }
+            70% { transform: scale(1.3); opacity: 0.7; }
+            100% { transform: scale(0); opacity: 0; }
+        }
+
+        /* ---- COMMON GAME CONTAINER FOR OVERLAYS ---- */
+        .game-wrapper-inner {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 220px;
+            width: 100%;
+        }
+
+        /* ---- HITE THE MOUSE GAME STYLES ---- */
+        .mouse-game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 220px;
+            position: relative;
+        }
+
+        .table-board {
+            position: relative;
+            width: 420px;
+            height: 180px;
+            background: linear-gradient(135deg, #a0522d, #8b4513);
+            border-radius: 30px;
+            border: 6px solid #5c2c16;
+            box-shadow: 0 12px 0 #421f0f, 0 15px 20px rgba(0,0,0,0.4), inset 0 5px 10px rgba(255,255,255,0.2);
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            padding: 12px;
+            gap: 12px;
+        }
+
+        .hole {
+            background: #2b170b;
+            border-radius: 50%;
+            border: 4px solid #4a2612;
+            box-shadow: inset 0 8px 12px rgba(0,0,0,0.8), 0 3px 0 rgba(255,255,255,0.1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mouse-character {
+            position: absolute;
+            bottom: -60px;
+            font-size: 3.2rem;
+            transition: bottom 0.2s ease-out;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            user-select: none;
+            filter: drop-shadow(0 4px 4px rgba(0,0,0,0.3));
+        }
+
+        .mouse-character.show {
+            bottom: 5px;
+        }
+
+        .mouse-character .dizzy-stars {
+            position: absolute;
+            top: -15px;
+            font-size: 1.2rem;
+            display: none;
+            animation: spinStars 1s infinite linear;
+        }
+
+        .mouse-character.dizzy .dizzy-stars {
+            display: block;
+        }
+
+        @keyframes spinStars {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.2); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        .hammer-cursor {
+            position: absolute;
+            font-size: 3rem;
+            z-index: 10;
+            pointer-events: none;
+            transition: transform 0.08s ease;
+            transform-origin: bottom right;
+            display: none;
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3));
+        }
+
+        .hammer-cursor.hit-swing {
+            transform: rotate(-45deg) scale(1.2);
+        }
+
+        /* End Screen Overlays */
+        .game-over-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 20;
+            border-radius: 75px 75px 35px 35px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .congrats-card {
+            background: #fef9e8;
+            border: 6px solid #ffcf7a;
+            border-radius: 30px;
+            padding: 20px 24px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            max-width: 420px;
+            width: 90%;
+        }
+
+        .congrats-card h2 {
+            font-size: 1.8rem;
+            color: #b33e1f;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 0 #ffcf7a;
+        }
+
+        .congrats-stats {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #2d1b0e;
+            margin-bottom: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            background: #f8e2b0;
+            padding: 8px 14px;
+            border-radius: 15px;
+            border: 2px solid #b48c5c;
+        }
+
+        .end-buttons-row {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .try-again-oval {
+            background: #2ecc71;
+            color: white;
+            border: 3px solid #186a3b;
+            border-radius: 40px;
+            padding: 10px 18px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 5px 0 #0e4d26, 0 6px 10px rgba(0,0,0,0.3);
+            transition: 0.08s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .try-again-oval:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 #0e4d26, 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .next-game-oval {
+            background: #3498db;
+            color: white;
+            border: 3px solid #1b4f72;
+            border-radius: 40px;
+            padding: 10px 18px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 5px 0 #154360, 0 6px 10px rgba(0,0,0,0.3);
+            transition: 0.08s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .next-game-oval:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 #154360, 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .restart-btn {
+            background: #ffb347;
+            border: none;
+            border-radius: 60px;
+            padding: 12px 32px;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #2d1b0e;
+            cursor: pointer;
+            box-shadow: 0 8px 0 #b46f1e, 0 10px 15px rgba(0,0,0,0.2);
+            transition: 0.08s;
+            border: 3px solid #ffe3a3;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .restart-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 4px 0 #b46f1e, 0 8px 12px rgba(0,0,0,0.2);
+        }
+
+        .bottom-row {
+            display: flex;
+            justify-content: center;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @media (max-width: 600px) {
+            .app { padding: 16px; border-radius: 35px; }
+            h1 { font-size: 1.6rem; }
+            .game-btn { font-size: 0.95rem; padding: 8px 12px; }
+            .balloon { width: 70px; height: 70px; font-size: 2.4rem; }
+            .mole { width: 75px; height: 75px; font-size: 2.8rem; }
+            .car { font-size: 2.2rem; }
+            .table-board { width: 100%; height: 160px; }
+            .hint-area kbd { font-size: 1.6rem; padding: 4px 14px; }
+            .hint-area p { font-size: 1rem; }
+            .key { min-width: 30px; font-size: 1rem; padding: 4px 0; border-radius: 8px; }
+            .cloud { font-size: 1.8rem; }
+            .tree { font-size: 1.6rem; }
+            .grass-tuft { font-size: 1rem; }
+            .hands-base-area { height: 70px; }
+            .hand-wrapper { width: 160px; }
+            .hand-palm { height: 45px; width: 120px; }
+            .fingers-row { bottom: 25px; width: 100px; gap: 3px; }
+            .finger { width: 20px; height: 48px; }
+            .thumb { width: 24px; height: 45px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <h1>🐢 4 Typing Games</h1>
+        <div class="subtitle">Press the correct key with 100% realistic human hands & finger guides!</div>
+
+        <div class="game-selector">
+            <button class="game-btn active" data-game="race">🏎️ Car Race</button>
+            <button class="game-btn" data-game="balloon">🎈 Balloon Pop</button>
+            <button class="game-btn" data-game="mole">🐹 Whack-a-Mole</button>
+            <button class="game-btn" data-game="mouse">🔨 Hite the Mouse</button>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat-box"><i>🏆</i> Score: <span id="scoreDisplay">0</span></div>
+            <div class="stat-box"><i>💔</i> Mistakes: <span id="missDisplay">0</span></div>
+            <div class="stat-box"><i>⚡</i> Speed: <span id="speedDisplay">0</span> WPM</div>
+        </div>
+
+        <!-- GAME AREA -->
+        <div class="game-area" id="gameArea">
+            <!-- Car Race Game with scenery -->
+            <div id="raceGame" class="game-content game-wrapper-inner">
+                <div class="race-track" style="width:100%;">
+                    <div class="cloud cloud-1">☁️</div>
+                    <div class="cloud cloud-2">☁️</div>
+                    <div class="cloud cloud-3">☁️</div>
+                    <div class="tree tree-1">🌳</div>
+                    <div class="tree tree-2">🌲</div>
+                    <div class="tree tree-3">🌳</div>
+                    <div class="tree tree-4">🌲</div>
+                    <div class="grass-strip">
+                        <span class="grass-tuft" style="left:5%;">🌿</span>
+                        <span class="grass-tuft" style="left:25%;">🌿</span>
+                        <span class="grass-tuft" style="left:45%;">🌿</span>
+                        <span class="grass-tuft" style="left:65%;">🌿</span>
+                        <span class="grass-tuft" style="left:85%;">🌿</span>
+                    </div>
+                    <div class="road-line"></div>
+                    <div class="finish-line"></div>
+                    <div class="car" id="playerCar">🚗</div>
+                    <div class="car right-car" id="opponentCar">🚙</div>
+                </div>
+                <div style="text-align:center; font-size:1.1rem; color:#2d1b0e; font-weight:600;">
+                    Press the shown key to speed up your car! (Reach target or 30 mistakes)
+                </div>
+                <!-- Universal Game Over Overlay -->
+                <div id="raceOverlay" class="game-over-overlay hidden">
+                    <div class="congrats-card">
+                        <h2 id="raceResultTitle">🎉 conjarts</h2>
+                        <div class="congrats-stats">
+                            <div>mph: <span id="raceResMph">0</span></div>
+                            <div>mistaks: <span id="raceResMistakes">0</span></div>
+                            <div>corret: <span id="raceResCorrect">0</span></div>
+                        </div>
+                        <div class="end-buttons-row" id="raceButtonsRow">
+                            <div class="try-again-oval" id="raceTryAgainBtn">try again</div>
+                            <div class="next-game-oval" id="raceNextGameBtn">next game</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Balloon Pop Game -->
+            <div id="balloonGame" class="game-content game-wrapper-inner hidden">
+                <div class="balloon-field" id="balloonField"></div>
+                <!-- Universal Game Over Overlay -->
+                <div id="balloonOverlay" class="game-over-overlay hidden">
+                    <div class="congrats-card">
+                        <h2 id="balloonResultTitle">🎉 conjarts</h2>
+                        <div class="congrats-stats">
+                            <div>mph: <span id="balloonResMph">0</span></div>
+                            <div>mistaks: <span id="balloonResMistakes">0</span></div>
+                            <div>corret: <span id="balloonResCorrect">0</span></div>
+                        </div>
+                        <div class="end-buttons-row" id="balloonButtonsRow">
+                            <div class="try-again-oval" id="balloonTryAgainBtn">try again</div>
+                            <div class="next-game-oval" id="balloonNextGameBtn">next game</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mole Game -->
+            <div id="moleGame" class="game-content game-wrapper-inner hidden">
+                <div class="mole-field" id="moleField"></div>
+                <!-- Universal Game Over Overlay -->
+                <div id="moleOverlay" class="game-over-overlay hidden">
+                    <div class="congrats-card">
+                        <h2 id="moleResultTitle">🎉 conjarts</h2>
+                        <div class="congrats-stats">
+                            <div>mph: <span id="moleResMph">0</span></div>
+                            <div>mistaks: <span id="moleResMistakes">0</span></div>
+                            <div>corret: <span id="moleResCorrect">0</span></div>
+                        </div>
+                        <div class="end-buttons-row" id="moleButtonsRow">
+                            <div class="try-again-oval" id="moleTryAgainBtn">try again</div>
+                            <div class="next-game-oval" id="moleNextGameBtn">next game</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hite the Mouse Game -->
+            <div id="mouseGame" class="game-content game-wrapper-inner hidden">
+                <div class="mouse-game-container">
+                    <div class="table-board" id="tableBoard">
+                        <div class="hole" data-hole="0"><div class="mouse-character" data-mouse="0"><span class="dizzy-stars">💫⭐</span>🐭</div></div>
+                        <div class="hole" data-hole="1"><div class="mouse-character" data-mouse="1"><span class="dizzy-stars">💫⭐</span>🐭</div></div>
+                        <div class="hole" data-hole="2"><div class="mouse-character" data-mouse="2"><span class="dizzy-stars">💫⭐</span>🐭</div></div>
+                        <div class="hole" data-hole="3"><div class="mouse-character" data-mouse="3"><span class="dizzy-stars">💫⭐</span>🐭</div></div>
+                        <div class="hole" data-hole="4"><div class="mouse-character" data-mouse="4"><span class="dizzy-stars">💫⭐</span>🐭</div></div>
+                        <div class="hole" data-hole="5"><div class="mouse-character" data-mouse="5"><span class="dizzy-stars">💫⭐</span>🐭</div></div>
+                    </div>
+                    <div class="hammer-cursor" id="hammerCursor">🔨</div>
+                </div>
+                <div id="mouseOverlay" class="game-over-overlay hidden">
+                    <div class="congrats-card">
+                        <h2 id="mouseResultTitle">🎉 Congrats!</h2>
+                        <div class="congrats-stats">
+                            <div>mph: <span id="resMph">0</span></div>
+                            <div>mistaks: <span id="resMistakes">0</span></div>
+                            <div>corret: <span id="resCorrect">0</span></div>
+                        </div>
+                        <div class="end-buttons-row" id="mouseButtonsRow">
+                            <div class="try-again-oval" id="tryAgainBtn">try again</div>
+                            <div class="next-game-oval" id="mouseNextGameBtn">next game</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- KEYBOARD & REALISTIC HUMAN HANDS CONTAINER -->
+        <div class="keyboard-container">
+            <div class="keyboard-section" id="keyboardSection">
+                <div class="keyboard-row" id="keyboardRow1"></div>
+                <div class="keyboard-row" id="keyboardRow2"></div>
+                <div class="keyboard-row" id="keyboardRow3"></div>
+            </div>
+
+            <!-- Realistic Organic Human Hands with Finger Dot Indicators -->
+            <div class="hands-base-area">
+                <!-- Left Hand (Thumb + 4 curved fingers) -->
+                <div class="hand-wrapper left-hand">
+                    <div class="hand-palm"></div>
+                    <div class="thumb"></div>
+                    <div class="fingers-row">
+                        <div class="finger" data-finger="left-pinky"><div class="finger-dot"></div></div>
+                        <div class="finger" data-finger="left-ring"><div class="finger-dot"></div></div>
+                        <div class="finger" data-finger="left-middle"><div class="finger-dot"></div></div>
+                        <div class="finger" data-finger="left-index"><div class="finger-dot"></div></div>
+                    </div>
+                </div>
+
+                <!-- Right Hand (4 curved fingers + Thumb) -->
+                <div class="hand-wrapper right-hand">
+                    <div class="hand-palm"></div>
+                    <div class="thumb"></div>
+                    <div class="fingers-row">
+                        <div class="finger" data-finger="right-index"><div class="finger-dot"></div></div>
+                        <div class="finger" data-finger="right-middle"><div class="finger-dot"></div></div>
+                        <div class="finger" data-finger="right-ring"><div class="finger-dot"></div></div>
+                        <div class="finger" data-finger="right-pinky"><div class="finger-dot"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hint Area -->
+        <div class="hint-area">
+            <p>
+                <span>Press:</span>
+                <kbd id="hintKey">?</kbd>
+                <span>to score!</span>
+            </p>
+        </div>
+
+        <div class="message" id="messageBox">Select a game and start typing!</div>
+
+        <div class="bottom-row">
+            <button class="restart-btn" id="restartButton">🔄 Restart Game</button>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            let currentGame = 'race';
+            let score = 0;
+            let misses = 0;
+            let gameActive = true;
+
+            let correctKeys = 0;
+            let startTime = Date.now();
+            let speedInterval = null;
+
+            let activeBalloons = [];
+            let nextBalloonId = 0;
+            let balloonHitsCount = 0;
+            let balloonMistakesCount = 0;
+            let balloonGameActive = false;
+
+            let activeMoles = [];
+            let nextMoleId = 0;
+            let moleHitsCount = 0;
+            let moleMistakesCount = 0;
+            let moleGameActive = false;
+
+            let raceCarPosition = 5;
+            let raceOpponentPosition = 5;
+            let raceTargetLetter = '';
+            let raceFinished = false;
+            let raceHitsCount = 0;
+            let raceMistakesCount = 0;
+            let raceGameActive = false;
+
+            let mouseTarget = null;
+            let mouseGameActive = false;
+            let mouseHitsCount = 0;
+            let mouseMistakesCount = 0;
+
+            const gamesList = ['race', 'balloon', 'mole', 'mouse'];
+
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const missDisplay = document.getElementById('missDisplay');
+            const speedDisplay = document.getElementById('speedDisplay');
+            const hintKey = document.getElementById('hintKey');
+            const messageBox = document.getElementById('messageBox');
+            const balloonField = document.getElementById('balloonField');
+            const moleField = document.getElementById('moleField');
+            const playerCar = document.getElementById('playerCar');
+            const opponentCar = document.getElementById('opponentCar');
+
+            const raceGameDiv = document.getElementById('raceGame');
+            const balloonGameDiv = document.getElementById('balloonGame');
+            const moleGameDiv = document.getElementById('moleGame');
+            const mouseGameDiv = document.getElementById('mouseGame');
+
+            const raceOverlay = document.getElementById('raceOverlay');
+            const raceResultTitle = document.getElementById('raceResultTitle');
+            const raceResMph = document.getElementById('raceResMph');
+            const raceResMistakes = document.getElementById('raceResMistakes');
+            const raceResCorrect = document.getElementById('raceResCorrect');
+            const raceTryAgainBtn = document.getElementById('raceTryAgainBtn');
+            const raceNextGameBtn = document.getElementById('raceNextGameBtn');
+            const raceButtonsRow = document.getElementById('raceButtonsRow');
+
+            const balloonOverlay = document.getElementById('balloonOverlay');
+            const balloonResultTitle = document.getElementById('balloonResultTitle');
+            const balloonResMph = document.getElementById('balloonResMph');
+            const balloonResMistakes = document.getElementById('balloonResMistakes');
+            const balloonResCorrect = document.getElementById('balloonResCorrect');
+            const balloonTryAgainBtn = document.getElementById('balloonTryAgainBtn');
+            const balloonNextGameBtn = document.getElementById('balloonNextGameBtn');
+            const balloonButtonsRow = document.getElementById('balloonButtonsRow');
+
+            const moleOverlay = document.getElementById('moleOverlay');
+            const moleResultTitle = document.getElementById('moleResultTitle');
+            const moleResMph = document.getElementById('moleResMph');
+            const moleResMistakes = document.getElementById('moleResMistakes');
+            const moleResCorrect = document.getElementById('moleResCorrect');
+            const moleTryAgainBtn = document.getElementById('moleTryAgainBtn');
+            const moleNextGameBtn = document.getElementById('moleNextGameBtn');
+            const moleButtonsRow = document.getElementById('moleButtonsRow');
+
+            const mouseOverlay = document.getElementById('mouseOverlay');
+            const mouseResultTitle = document.getElementById('mouseResultTitle');
+            const resMph = document.getElementById('resMph');
+            const resMistakes = document.getElementById('resMistakes');
+            const resCorrect = document.getElementById('resCorrect');
+            const tryAgainBtn = document.getElementById('tryAgainBtn');
+            const mouseNextGameBtn = document.getElementById('mouseNextGameBtn');
+            const mouseButtonsRow = document.getElementById('mouseButtonsRow');
+            const hammerCursor = document.getElementById('hammerCursor');
+
+            const gameButtons = document.querySelectorAll('.game-btn');
+            const restartBtn = document.getElementById('restartButton');
+
+            const keyboardRow1 = document.getElementById('keyboardRow1');
+            const keyboardRow2 = document.getElementById('keyboardRow2');
+            const keyboardRow3 = document.getElementById('keyboardRow3');
+
+            const ROW1 = ['Q','W','E','R','T','Y','U','I','O','P'];
+            const ROW2 = ['A','S','D','F','G','H','J','K','L'];
+            const ROW3 = ['Z','X','C','V','B','N','M'];
+
+            const FINGER_MAP = {
+                'Q': 'left-pinky', 'A': 'left-pinky', 'Z': 'left-pinky',
+                'W': 'left-ring', 'S': 'left-ring', 'X': 'left-ring',
+                'E': 'left-middle', 'D': 'left-middle', 'C': 'left-middle',
+                'R': 'left-index', 'F': 'left-index', 'V': 'left-index', 'T': 'left-index', 'B': 'left-index',
+                'Y': 'right-index', 'H': 'right-index', 'N': 'right-index', 'U': 'right-index', 'J': 'right-index', 'M': 'right-index',
+                'I': 'right-middle', 'K': 'right-middle',
+                'O': 'right-ring', 'L': 'right-ring',
+                'P': 'right-pinky'
+            };
+
+            function buildKeyboard() {
+                keyboardRow1.innerHTML = '';
+                keyboardRow2.innerHTML = '';
+                keyboardRow3.innerHTML = '';
+
+                ROW1.forEach(k => {
+                    const el = document.createElement('div');
+                    el.className = 'key';
+                    el.textContent = k;
+                    el.dataset.key = k;
+                    keyboardRow1.appendChild(el);
+                });
+                ROW2.forEach(k => {
+                    const el = document.createElement('div');
+                    el.className = 'key';
+                    el.textContent = k;
+                    el.dataset.key = k;
+                    keyboardRow2.appendChild(el);
+                });
+                ROW3.forEach(k => {
+                    const el = document.createElement('div');
+                    el.className = 'key';
+                    el.textContent = k;
+                    el.dataset.key = k;
+                    keyboardRow3.appendChild(el);
+                });
+            }
+
+            function highlightKeyAndFinger(letter) {
+                document.querySelectorAll('.key').forEach(k => k.classList.remove('highlight-key'));
+                document.querySelectorAll('.finger').forEach(f => f.classList.remove('active-finger'));
+
+                if (!letter) return;
+
+                const keys = document.querySelectorAll('.key');
+                keys.forEach(k => {
+                    if (k.dataset.key === letter) {
+                        k.classList.add('highlight-key');
+                    }
+                });
+
+                const fingerName = FINGER_MAP[letter];
+                if (fingerName) {
+                    const fingerEl = document.querySelector(`.finger[data-finger="${fingerName}"]`);
+                    if (fingerEl) {
+                        fingerEl.classList.add('active-finger');
+                    }
+                }
+            }
+
+            function flashKey(letter, isCorrect) {
+                const keys = document.querySelectorAll('.key');
+                let targetKey = null;
+                keys.forEach(k => {
+                    if (k.dataset.key === letter) targetKey = k;
+                });
+                if (!targetKey) return;
+
+                targetKey.classList.remove('correct', 'wrong');
+                void targetKey.offsetWidth;
+                targetKey.classList.add(isCorrect ? 'correct' : 'wrong');
+
+                setTimeout(() => {
+                    targetKey.classList.remove('correct', 'wrong');
+                }, 300);
+            }
+
+            const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+            const COLORS = ['red', 'blue', 'green', 'purple', 'orange'];
+            const MAX_BALLOONS = 4;
+            const MAX_MOLES = 3;
+            const BALLOON_LIFETIME = 7000;
+            const MOLE_LIFETIME = 8000;
+            const SPAWN_INTERVAL = 1800;
+
+            function updateStats() {
+                scoreDisplay.textContent = score;
+                missDisplay.textContent = misses;
+                const elapsedMinutes = (Date.now() - startTime) / 60000;
+                const wpm = elapsedMinutes > 0 ? Math.round(correctKeys / elapsedMinutes) : 0;
+                speedDisplay.textContent = wpm;
+            }
+
+            function resetStats() {
+                score = 0;
+                misses = 0;
+                correctKeys = 0;
+                startTime = Date.now();
+                updateStats();
+            }
+
+            function getRandomAvailableLetter(activeLetters) {
+                const available = LETTERS.filter(l => !activeLetters.includes(l));
+                if (available.length === 0) return null;
+                return available[Math.floor(Math.random() * available.length)];
+            }
+
+            function getRandomColor() {
+                return COLORS[Math.floor(Math.random() * COLORS.length)];
+            }
+
+            function updateHint() {
+                if (!gameActive) {
+                    hintKey.textContent = '?';
+                    highlightKeyAndFinger(null);
+                    return;
+                }
+                let target = '?';
+                if (currentGame === 'race') {
+                    target = raceTargetLetter || '?';
+                } else if (currentGame === 'balloon') {
+                    target = activeBalloons.length > 0 ? activeBalloons[0].letter : '?';
+                } else if (currentGame === 'mole') {
+                    target = activeMoles.length > 0 ? activeMoles[0].letter : '?';
+                } else if (currentGame === 'mouse') {
+                    target = mouseTarget ? mouseTarget.letter : '?';
+                }
+                hintKey.textContent = target;
+                highlightKeyAndFinger(target !== '?' ? target : null);
+            }
+
+            function switchGame(game) {
+                currentGame = game;
+                gameButtons.forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.game === game);
+                });
+                raceGameDiv.classList.add('hidden');
+                balloonGameDiv.classList.add('hidden');
+                moleGameDiv.classList.add('hidden');
+                mouseGameDiv.classList.add('hidden');
+
+                if (game === 'race') raceGameDiv.classList.remove('hidden');
+                else if (game === 'balloon') balloonGameDiv.classList.remove('hidden');
+                else if (game === 'mole') moleGameDiv.classList.remove('hidden');
+                else if (game === 'mouse') mouseGameDiv.classList.remove('hidden');
+
+                restartGame();
+            }
+
+            function switchToNextGame() {
+                const currentIndex = gamesList.indexOf(currentGame);
+                const nextIndex = (currentIndex + 1) % gamesList.length;
+                switchGame(gamesList[nextIndex]);
+            }
+
+            function restartGame() {
+                gameActive = false;
+
+                activeBalloons.forEach(b => { if (b.timeoutId) clearTimeout(b.timeoutId); });
+                activeMoles.forEach(m => { if (m.timeoutId) clearTimeout(m.timeoutId); });
+                if (mouseTarget && mouseTarget.timerId) clearTimeout(mouseTarget.timerId);
+                if (window.raceInterval) clearInterval(window.raceInterval);
+                if (window.balloonInterval) clearInterval(window.balloonInterval);
+                if (window.moleInterval) clearInterval(window.moleInterval);
+
+                balloonField.innerHTML = '';
+                moleField.innerHTML = '';
+                activeBalloons = [];
+                activeMoles = [];
+                nextBalloonId = 0;
+                nextMoleId = 0;
+
+                raceCarPosition = 5;
+                raceOpponentPosition = 5;
+                playerCar.style.left = '5%';
+                opponentCar.style.right = '95%';
+                raceFinished = false;
+                raceHitsCount = 0;
+                raceMistakesCount = 0;
+                raceGameActive = false;
+
+                balloonHitsCount = 0;
+                balloonMistakesCount = 0;
+                balloonGameActive = false;
+
+                moleHitsCount = 0;
+                moleMistakesCount = 0;
+                moleGameActive = false;
+
+                raceOverlay.classList.add('hidden');
+                balloonOverlay.classList.add('hidden');
+                moleOverlay.classList.add('hidden');
+                mouseOverlay.classList.add('hidden');
+
+                mouseGameActive = false;
+                mouseHitsCount = 0;
+                mouseMistakesCount = 0;
+                mouseTarget = null;
+                document.querySelectorAll('.mouse-character').forEach(m => {
+                    m.classList.remove('show', 'dizzy');
+                    m.innerHTML = '<span class="dizzy-stars">💫⭐</span>🐭';
+                });
+
+                resetStats();
+                messageBox.textContent = 'Press the key shown below!';
+                gameActive = true;
+
+                setTimeout(() => {
+                    if (!gameActive) return;
+                    if (currentGame === 'race') startRace();
+                    else if (currentGame === 'balloon') startBalloonGame();
+                    else if (currentGame === 'mole') startMoleGame();
+                    else if (currentGame === 'mouse') startMouseGame();
+                }, 200);
+            }
+
+            function endGenericGame(gameType, won) {
+                gameActive = false;
+                const elapsedMinutes = (Date.now() - startTime) / 60000;
+                let hits = 0, mistakes = 0;
+
+                if (gameType === 'race') {
+                    raceGameActive = false;
+                    if (window.raceInterval) clearInterval(window.raceInterval);
+                    hits = raceHitsCount;
+                    mistakes = raceMistakesCount;
+
+                    const mphVal = elapsedMinutes > 0 ? Math.round((hits / elapsedMinutes) * 2) : hits * 15;
+                    raceResMph.textContent = mphVal;
+                    raceResMistakes.textContent = mistakes;
+                    raceResCorrect.textContent = hits;
+
+                    raceResultTitle.textContent = won ? '🎉 conjarts' : 'lose';
+                    raceButtonsRow.innerHTML = won 
+                        ? `<div class="try-again-oval" id="raceTryAgainBtn">try again</div><div class="next-game-oval" id="raceNextGameBtn">next game</div>`
+                        : `<div class="try-again-oval" id="raceTryAgainBtn">try again</div>`;
+                    
+                    document.getElementById('raceTryAgainBtn').addEventListener('click', () => restartGame());
+                    if (won) {
+                        document.getElementById('raceNextGameBtn').addEventListener('click', () => switchToNextGame());
+                    }
+                    raceOverlay.classList.remove('hidden');
+
+                } else if (gameType === 'balloon') {
+                    balloonGameActive = false;
+                    if (window.balloonInterval) clearInterval(window.balloonInterval);
+                    activeBalloons.forEach(b => { if (b.timeoutId) clearTimeout(b.timeoutId); });
+                    hits = balloonHitsCount;
+                    mistakes = balloonMistakesCount;
+
+                    const mphVal = elapsedMinutes > 0 ? Math.round((hits / elapsedMinutes) * 2) : hits * 15;
+                    balloonResMph.textContent = mphVal;
+                    balloonResMistakes.textContent = mistakes;
+                    balloonResCorrect.textContent = hits;
+
+                    balloonResultTitle.textContent = won ? '🎉 conjarts' : 'lose';
+                    balloonButtonsRow.innerHTML = won 
+                        ? `<div class="try-again-oval" id="balloonTryAgainBtn">try again</div><div class="next-game-oval" id="balloonNextGameBtn">next game</div>`
+                        : `<div class="try-again-oval" id="balloonTryAgainBtn">try again</div>`;
+                    
+                    document.getElementById('balloonTryAgainBtn').addEventListener('click', () => restartGame());
+                    if (won) {
+                        document.getElementById('balloonNextGameBtn').addEventListener('click', () => switchToNextGame());
+                    }
+                    balloonOverlay.classList.remove('hidden');
+
+                } else if (gameType === 'mole') {
+                    moleGameActive = false;
+                    if (window.moleInterval) clearInterval(window.moleInterval);
+                    activeMoles.forEach(m => { if (m.timeoutId) clearTimeout(m.timeoutId); });
+                    hits = moleHitsCount;
+                    mistakes = moleMistakesCount;
+
+                    const mphVal = elapsedMinutes > 0 ? Math.round((hits / elapsedMinutes) * 2) : hits * 15;
+                    moleResMph.textContent = mphVal;
+                    moleResMistakes.textContent = mistakes;
+                    moleResCorrect.textContent = hits;
+
+                    moleResultTitle.textContent = won ? '🎉 conjarts' : 'lose';
+                    moleButtonsRow.innerHTML = won 
+                        ? `<div class="try-again-oval" id="moleTryAgainBtn">try again</div><div class="next-game-oval" id="moleNextGameBtn">next game</div>`
+                        : `<div class="try-again-oval" id="moleTryAgainBtn">try again</div>`;
+                    
+                    document.getElementById('moleTryAgainBtn').addEventListener('click', () => restartGame());
+                    if (won) {
+                        document.getElementById('moleNextGameBtn').addEventListener('click', () => switchToNextGame());
+                    }
+                    moleOverlay.classList.remove('hidden');
+                }
+                updateHint();
+            }
+
+            function startMouseGame() {
+                mouseGameActive = true;
+                mouseHitsCount = 0;
+                mouseMistakesCount = 0;
+                spawnMouse();
+            }
+
+            function spawnMouse() {
+                if (!gameActive || !mouseGameActive || currentGame !== 'mouse') return;
+
+                document.querySelectorAll('.mouse-character').forEach(m => {
+                    m.classList.remove('show', 'dizzy');
+                    m.innerHTML = '<span class="dizzy-stars">💫⭐</span>🐭';
+                });
+
+                const holeIndex = Math.floor(Math.random() * 6);
+                const letter = LETTERS[Math.floor(Math.random() * LETTERS.length)];
+
+                const mouseEl = document.querySelector(`.mouse-character[data-mouse="${holeIndex}"]`);
+                if (!mouseEl) return;
+
+                mouseEl.innerHTML = `<span class="dizzy-stars">💫⭐</span>🐭<span style="font-size:1.1rem; background:#ffcf7a; color:#2d1b0e; padding:1px 6px; border-radius:6px; font-weight:800; border:1px solid #b48c5c;">${letter}</span>`;
+                mouseEl.classList.add('show');
+
+                mouseTarget = {
+                    holeIndex: holeIndex,
+                    letter: letter,
+                    element: mouseEl,
+                    timerId: setTimeout(() => {
+                        if (mouseGameActive && mouseTarget && mouseTarget.holeIndex === holeIndex) {
+                            mouseEl.classList.remove('show');
+                            mouseTarget = null;
+                            misses++;
+                            mouseMistakesCount++;
+                            updateStats();
+                            messageBox.textContent = `⏰ Mouse ran away!`;
+
+                            if (mouseMistakesCount >= 30) {
+                                endMouseGame(false);
+                            } else {
+                                setTimeout(spawnMouse, 600);
+                            }
+                        }
+                    }, 3000)
+                };
+
+                updateHint();
+                messageBox.textContent = `Hit the mouse by pressing ${letter}!`;
+            }
+
+            function handleMouseKey(key) {
+                if (!mouseGameActive || !mouseTarget) return;
+
+                if (key === mouseTarget.letter) {
+                    correctKeys++;
+                    score++;
+                    mouseHitsCount++;
+                    updateStats();
+
+                    if (mouseTarget.timerId) clearTimeout(mouseTarget.timerId);
+
+                    const targetEl = mouseTarget.element;
+                    targetEl.classList.add('dizzy');
+
+                    const holeRect = targetEl.parentElement.getBoundingClientRect();
+                    const boardRect = mouseGameDiv.getBoundingClientRect();
+                    hammerCursor.style.display = 'block';
+                    hammerCursor.style.left = (holeRect.left - boardRect.left + 20) + 'px';
+                    hammerCursor.style.top = (holeRect.top - boardRect.top - 20) + 'px';
+                    hammerCursor.classList.add('hit-swing');
+
+                    setTimeout(() => {
+                        hammerCursor.classList.remove('hit-swing');
+                        hammerCursor.style.display = 'none';
+                    }, 200);
+
+                    messageBox.textContent = `🔨 Wham! Dizzy mouse goes down!`;
+
+                    setTimeout(() => {
+                        targetEl.classList.remove('show', 'dizzy');
+                        mouseTarget = null;
+
+                        if (mouseHitsCount >= 10) {
+                            endMouseGame(true);
+                        } else if (mouseMistakesCount >= 30) {
+                            endMouseGame(false);
+                        } else {
+                            setTimeout(spawnMouse, 400);
+                        }
+                    }, 500);
+
+                } else {
+                    misses++;
+                    mouseMistakesCount++;
+                    updateStats();
+                    messageBox.textContent = `❌ Wrong key! Press ${mouseTarget.letter}`;
+
+                    if (mouseMistakesCount >= 30) {
+                        endMouseGame(false);
+                    }
+                }
+            }
+
+            function endMouseGame(won) {
+                mouseGameActive = false;
+                gameActive = false;
+                if (mouseTarget && mouseTarget.timerId) clearTimeout(mouseTarget.timerId);
+
+                const elapsedMinutes = (Date.now() - startTime) / 60000;
+                const mphVal = elapsedMinutes > 0 ? Math.round((correctKeys / elapsedMinutes) * 2) : correctKeys * 15;
+
+                resMph.textContent = mphVal;
+                resMistakes.textContent = mouseMistakesCount;
+                resCorrect.textContent = mouseHitsCount;
+
+                mouseResultTitle.textContent = won ? '🎉 conjarts' : 'lose';
+                mouseButtonsRow.innerHTML = won 
+                    ? `<div class="try-again-oval" id="tryAgainBtn">try again</div><div class="next-game-oval" id="mouseNextGameBtn">next game</div>`
+                    : `<div class="try-again-oval" id="tryAgainBtn">try again</div>`;
+
+                document.getElementById('tryAgainBtn').addEventListener('click', () => restartGame());
+                if (won) {
+                    document.getElementById('mouseNextGameBtn').addEventListener('click', () => switchToNextGame());
+                }
+
+                mouseOverlay.classList.remove('hidden');
+                updateHint();
+            }
+
+            tryAgainBtn.addEventListener('click', () => restartGame());
+
+            function startRace() {
+                raceGameActive = true;
+                raceFinished = false;
+                raceCarPosition = 5;
+                raceOpponentPosition = 5;
+                raceHitsCount = 0;
+                raceMistakesCount = 0;
+                playerCar.style.left = '5%';
+                opponentCar.style.right = '95%';
+
+                const activeLetters = [];
+                const letter = getRandomAvailableLetter(activeLetters);
+                raceTargetLetter = letter || 'A';
+                updateHint();
+                messageBox.textContent = `Press ${raceTargetLetter} to speed up your car!`;
+
+                if (window.raceInterval) clearInterval(window.raceInterval);
+                window.raceInterval = setInterval(() => {
+                    if (!gameActive || !raceGameActive || currentGame !== 'race' || raceFinished) return;
+                    if (raceOpponentPosition < 95) {
+                        raceOpponentPosition += 0.5;
+                        opponentCar.style.right = (100 - raceOpponentPosition) + '%';
+                    }
+                    if (raceOpponentPosition >= 95) {
+                        raceFinished = true;
+                        endGenericGame('race', false);
+                    }
+                }, 300);
+            }
+
+            function handleRaceKey(key) {
+                if (!raceGameActive || raceFinished) return;
+                if (key === raceTargetLetter) {
+                    correctKeys++;
+                    raceHitsCount++;
+                    raceCarPosition += 4;
+                    if (raceCarPosition > 95) raceCarPosition = 95;
+                    playerCar.style.left = raceCarPosition + '%';
+                    score++;
+                    updateStats();
+                    messageBox.textContent = `✅ Great! ${key} is correct!`;
+
+                    if (raceCarPosition >= 95) {
+                        raceFinished = true;
+                        endGenericGame('race', true);
+                        return;
+                    }
+                    const newLetter = getRandomAvailableLetter([]);
+                    raceTargetLetter = newLetter || 'A';
+                    updateHint();
+                } else {
+                    misses++;
+                    raceMistakesCount++;
+                    updateStats();
+                    messageBox.textContent = `❌ Oops! Press ${raceTargetLetter} to move.`;
+
+                    if (raceMistakesCount >= 30) {
+                        raceFinished = true;
+                        endGenericGame('race', false);
+                    }
+                }
+            }
+
+            function startBalloonGame() {
+                balloonGameActive = true;
+                balloonHitsCount = 0;
+                balloonMistakesCount = 0;
+                spawnBalloon();
+                if (window.balloonInterval) clearInterval(window.balloonInterval);
+                window.balloonInterval = setInterval(() => {
+                    if (gameActive && balloonGameActive && currentGame === 'balloon') spawnBalloon();
+                }, SPAWN_INTERVAL);
+            }
+
+            function spawnBalloon() {
+                if (!gameActive || !balloonGameActive || currentGame !== 'balloon') return;
+                if (activeBalloons.length >= MAX_BALLOONS) return;
+                const activeLetters = activeBalloons.map(b => b.letter);
+                const letter = getRandomAvailableLetter(activeLetters);
+                if (!letter) return;
+
+                const color = getRandomColor();
+                const id = nextBalloonId++;
+
+                const balloonEl = document.createElement('div');
+                balloonEl.className = 'balloon';
+                balloonEl.setAttribute('data-color', color);
+                balloonEl.textContent = letter;
+                balloonEl.setAttribute('data-id', id);
+                balloonField.appendChild(balloonEl);
+
+                const balloonObj = {
+                    id: id,
+                    letter: letter,
+                    element: balloonEl,
+                    color: color,
+                    timeoutId: null,
+                };
+
+                const timeoutId = setTimeout(() => {
+                    if (gameActive && balloonGameActive && currentGame === 'balloon') {
+                        const stillThere = activeBalloons.some(b => b.id === id);
+                        if (stillThere) {
+                            balloonObj.element.classList.add('pop');
+                            setTimeout(() => balloonObj.element.remove(), 200);
+                            const idx = activeBalloons.findIndex(b => b.id === id);
+                            if (idx !== -1) activeBalloons.splice(idx, 1);
+                            misses++;
+                            balloonMistakesCount++;
+                            updateStats();
+                            messageBox.textContent = `😢 Balloon with ${letter} floated away!`;
+                            updateHint();
+
+                            if (balloonMistakesCount >= 30) {
+                                endGenericGame('balloon', false);
+                            }
+                        }
+                    }
+                }, BALLOON_LIFETIME);
+
+                balloonObj.timeoutId = timeoutId;
+                activeBalloons.push(balloonObj);
+                updateHint();
+            }
+
+            function handleBalloonKey(key) {
+                if (!balloonGameActive) return;
+                const idx = activeBalloons.findIndex(b => b.letter === key);
+                if (idx !== -1) {
+                    const balloon = activeBalloons[idx];
+                    if (balloon.timeoutId) clearTimeout(balloon.timeoutId);
+                    balloon.element.classList.add('pop');
+                    setTimeout(() => balloon.element.remove(), 200);
+                    activeBalloons.splice(idx, 1);
+                    score++;
+                    correctKeys++;
+                    balloonHitsCount++;
+                    updateStats();
+                    messageBox.textContent = `🎈 Pop! ${key} was correct!`;
+                    updateHint();
+
+                    if (balloonHitsCount >= 10) {
+                        endGenericGame('balloon', true);
+                    }
+                } else {
+                    misses++;
+                    balloonMistakesCount++;
+                    updateStats();
+                    messageBox.textContent = `❌ No balloon with ${key}. Try again!`;
+
+                    if (balloonMistakesCount >= 30) {
+                        endGenericGame('balloon', false);
+                    }
+                }
+            }
+
+            function startMoleGame() {
+                moleGameActive = true;
+                moleHitsCount = 0;
+                moleMistakesCount = 0;
+                spawnMole();
+                if (window.moleInterval) clearInterval(window.moleInterval);
+                window.moleInterval = setInterval(() => {
+                    if (gameActive && moleGameActive && currentGame === 'mole') {
+                        spawnMole();
+                    }
+                }, SPAWN_INTERVAL);
+            }
+
+            function spawnMole() {
+                if (!gameActive || !moleGameActive || currentGame !== 'mole') return;
+                if (activeMoles.length >= MAX_MOLES) return;
+
+                const activeLetters = activeMoles.map(m => m.letter);
+                const letter = getRandomAvailableLetter(activeLetters);
+                if (!letter) return;
+
+                const id = nextMoleId++;
+
+                const moleEl = document.createElement('div');
+                moleEl.className = 'mole';
+                moleEl.textContent = letter;
+                moleEl.setAttribute('data-id', id);
+
+                moleField.appendChild(moleEl);
+
+                const moleObj = {
+                    id: id,
+                    letter: letter,
+                    element: moleEl,
+                    timeoutId: null,
+                };
+
+                const timeoutId = setTimeout(() => {
+                    if (gameActive && moleGameActive && currentGame === 'mole') {
+                        const stillThere = activeMoles.some(m => m.id === id);
+                        if (stillThere) {
+                            moleObj.element.classList.add('pop');
+                            setTimeout(() => moleObj.element.remove(), 200);
+                            const idx = activeMoles.findIndex(m => m.id === id);
+                            if (idx !== -1) activeMoles.splice(idx, 1);
+                            misses++;
+                            moleMistakesCount++;
+                            updateStats();
+                            messageBox.textContent = `😢 Mole with ${letter} hid away!`;
+                            updateHint();
+
+                            if (moleMistakesCount >= 30) {
+                                endGenericGame('mole', false);
+                            }
+                        }
+                    }
+                }, MOLE_LIFETIME);
+
+                moleObj.timeoutId = timeoutId;
+                activeMoles.push(moleObj);
+                updateHint();
+            }
+
+            function handleMoleKey(key) {
+                if (!moleGameActive) return;
+                const idx = activeMoles.findIndex(m => m.letter === key);
+                if (idx !== -1) {
+                    const mole = activeMoles[idx];
+                    if (mole.timeoutId) clearTimeout(mole.timeoutId);
+                    mole.element.classList.add('pop');
+                    setTimeout(() => mole.element.remove(), 200);
+                    activeMoles.splice(idx, 1);
+                    score++;
+                    correctKeys++;
+                    moleHitsCount++;
+                    updateStats();
+                    messageBox.textContent = `🐹 Whack! ${key} was correct!`;
+                    updateHint();
+
+                    if (moleHitsCount >= 10) {
+                        endGenericGame('mole', true);
+                    }
+                } else {
+                    misses++;
+                    moleMistakesCount++;
+                    updateStats();
+                    messageBox.textContent = `❌ No mole with ${key}. Try again!`;
+
+                    if (moleMistakesCount >= 30) {
+                        endGenericGame('mole', false);
+                    }
+                }
+            }
+
+            function onKeyDown(event) {
+                if (!gameActive) return;
+                if (event.ctrlKey || event.altKey || event.metaKey) return;
+
+                const key = event.key.toUpperCase();
+                if (!/^[A-Z]$/.test(key)) return;
+
+                event.preventDefault();
+
+                let isHit = false;
+                if (currentGame === 'race') {
+                    isHit = (key === raceTargetLetter);
+                    handleRaceKey(key);
+                } else if (currentGame === 'balloon') {
+                    isHit = activeBalloons.some(b => b.letter === key);
+                    handleBalloonKey(key);
+                } else if (currentGame === 'mole') {
+                    isHit = activeMoles.some(m => m.letter === key);
+                    handleMoleKey(key);
+                } else if (currentGame === 'mouse') {
+                    isHit = mouseTarget && (key === mouseTarget.letter);
+                    handleMouseKey(key);
+                }
+
+                flashKey(key, isHit);
+                updateHint();
+            }
+
+            function init() {
+                buildKeyboard();
+
+                gameButtons.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        switchGame(btn.dataset.game);
+                    });
+                });
+
+                restartBtn.addEventListener('click', restartGame);
+                window.addEventListener('keydown', onKeyDown);
+
+                switchGame('race');
+
+                if (speedInterval) clearInterval(speedInterval);
+                speedInterval = setInterval(() => {
+                    if (gameActive) {
+                        const elapsedMinutes = (Date.now() - startTime) / 60000;
+                        const wpm = elapsedMinutes > 0 ? Math.round(correctKeys / elapsedMinutes) : 0;
+                        speedDisplay.textContent = wpm;
+                    }
+                }, 1000);
+            }
+
+            init();
+
+            window.addEventListener('beforeunload', function() {
+                if (window.raceInterval) clearInterval(window.raceInterval);
+                if (window.balloonInterval) clearInterval(window.balloonInterval);
+                if (window.moleInterval) clearInterval(window.moleInterval);
+                if (speedInterval) clearInterval(speedInterval);
+            });
+
+        })();
+    </script>
+</body>
+</html>
